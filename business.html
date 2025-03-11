@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up with OTP</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .signup-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .toggle-link {
+      color: #007BFF;
+      cursor: pointer;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="signup-container">
+    <h2>Sign Up for Business</h2>
+
+    <!-- Step 1: Enter Mobile or Email -->
+    <div id="step-1">
+      <input type="text" id="contact-info" placeholder="Mobile No. or Email" required />
+      <button onclick="sendOTP()">Send OTP</button>
+
+      <!-- Links (ONLY in step 1) -->
+      <span class="toggle-link" onclick="redirectToLogin()">Already have an account? Login</span>
+      
+
+      <hr />
+
+      <button style="background:#4267B2;">Sign Up with Facebook</button>
+      <button style="background:#DB4437;">Sign Up with Google</button>
+    </div>
+
+    <!-- Step 2: Enter OTP -->
+    <div id="step-2" class="hidden">
+      <input type="text" id="otp-input" placeholder="Enter OTP" required />
+      <button onclick="verifyOTP()">Verify OTP</button>
+    </div>
+
+    <!-- Step 3: Create Username and Password -->
+    <div id="step-3" class="hidden">
+      <input type="text" id="signup-username" placeholder="Username" required />
+      <input type="password" id="signup-password" placeholder="Create Password" required />
+      <input type="password" id="confirm-password" placeholder="Confirm Password" required />
+      <button onclick="createAccount()">Create Account</button>
+    </div>
+
+  </div>
+
+  <script>
+    let generatedOTP = "";
+
+    function sendOTP() {
+      const contact = document.getElementById("contact-info").value.trim();
+
+      if (!contact) {
+        alert("Please enter your mobile number or email.");
+        return;
+      }
+
+      if (isEmail(contact)) {
+        // Validate email format (simple)
+        if (!contact.includes("@")) {
+          alert("Please enter a valid email address that contains '@'.");
+          return;
+        }
+      } else if (isMobile(contact)) {
+        // Validate mobile number (exactly 10 digits)
+        if (contact.length !== 10 || !/^\d+$/.test(contact)) {
+          alert("Please enter a valid 10-digit mobile number.");
+          return;
+        }
+      } else {
+        alert("Please enter a valid email or 10-digit mobile number.");
+        return;
+      }
+
+      // Generate a mock OTP (replace with actual OTP service in production)
+      generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+      alert("Your OTP is: " + generatedOTP);  // ⚠️ Only for demo/testing purpose
+
+      // Hide Step 1, show Step 2 (OTP input)
+      document.getElementById("step-1").classList.add("hidden");
+      document.getElementById("step-2").classList.remove("hidden");
+    }
+
+    function verifyOTP() {
+      const userOTP = document.getElementById("otp-input").value.trim();
+
+      if (!userOTP) {
+        alert("Please enter the OTP.");
+        return;
+      }
+
+      if (userOTP === generatedOTP) {
+        alert("OTP Verified Successfully!");
+
+        // Hide Step 2, show Step 3 (Create username and password)
+        document.getElementById("step-2").classList.add("hidden");
+        document.getElementById("step-3").classList.remove("hidden");
+      } else {
+        alert("Invalid OTP. Please try again.");
+      }
+    }
+
+    function createAccount() {
+      const username = document.getElementById("signup-username").value.trim();
+      const password = document.getElementById("signup-password").value.trim();
+      const confirmPassword = document.getElementById("confirm-password").value.trim();
+
+      if (!username || !password || !confirmPassword) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      // Success message and redirect
+      alert(`Account created successfully! Welcome, ${username}`);
+      window.location.href = "busniness...html"; // Redirect to busniess page
+    }
+
+    function isEmail(input) {
+      // A very basic email validation rule (checks if contains '@' and '.')
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+    }
+
+    function isMobile(input) {
+      return /^\d{10}$/.test(input);
+    }
+
+    function redirectToLogin() {
+      window.location.href = "busniness...html";
+    }
+
+    
+
+  </script>
+
+</body>
+</html>
